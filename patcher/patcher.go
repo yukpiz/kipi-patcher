@@ -16,6 +16,7 @@ func Execute() error {
 	option := args.Option{}
 	option.ParseArgs()
 	fmt.Printf("%+v\n", option)
+	option.OutputHelp()
 
 	//Load yaml configuration.
 	var config Config
