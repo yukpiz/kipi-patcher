@@ -2,6 +2,7 @@ package patcher
 
 import (
 	"fmt"
+	"github.com/yukpiz/kipi-patcher/parser"
 	"github.com/yukpiz/kipi-patcher/request"
 	"path/filepath"
 )
@@ -17,9 +18,16 @@ func Execute() error {
 		return err
 	}
 
-	info, err := request.GetBodyString(config.Url.PatchInfo)
+	//Request and get the patch header.
+	text, err := request.GetBodyString(config.Url.PatchInfo)
 	if err != nil {
 		return err
 	}
+
+	info := new(patchinfo.PatchInfo)
+	if err := info.Unmarshal(text); err != nil {
+		return err
+	}
+
 	return nil
 }
