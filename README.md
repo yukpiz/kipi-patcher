@@ -12,7 +12,7 @@ In development now!
 
 You specify the patch numbers.  
 
-```
+```bash
 $ patcher --from 350 --to 400
 > Archive downloading 350 ~ 400 patches[350_to_400.pack].
 
@@ -23,23 +23,23 @@ $ patcher --to 400 //WARNING: It takes a very long time :(
 Debugging or status checking commands.  
 
 Version and infomations.  
-```
+```bash
 $ patcher --version
 ```
 
 Get patch infomations.  
-```
+```bash
 $ patcher --patch
 ```
 
 Show md5 file hashes and size.  
 *Not actually download it.*  
-```
+```bash
 $ patcher --info --to 400
 ```
 
 Patch server status.  
-```
+```bash
 $ patcher --server
 ```
 
