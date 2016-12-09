@@ -2,6 +2,7 @@ package patcher
 
 import (
 	"fmt"
+	"github.com/yukpiz/kipi-patcher/args"
 	"github.com/yukpiz/kipi-patcher/parser"
 	"github.com/yukpiz/kipi-patcher/request"
 	"path/filepath"
@@ -11,6 +12,11 @@ const ROOT_PATH string = "/home/yukpiz/.go/extend/src/github.com/yukpiz/kipi-pat
 
 func Execute() error {
 	fmt.Println("Execute kipi-patcher ===> (•ө•)♡")
+	//Parsing command line arguments.
+	option := args.Option{}
+	option.ParseArgs()
+	fmt.Printf("%+v\n", option)
+
 	//Load yaml configuration.
 	var config Config
 	fpath := filepath.Join(ROOT_PATH, "kipi.yml")
