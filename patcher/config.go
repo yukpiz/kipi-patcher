@@ -5,6 +5,14 @@ import (
 	"io/ioutil"
 )
 
+type Constants struct {
+	PATCH_INFO_URL string
+}
+
+func Get() Constants {
+	return Constants{}
+}
+
 type Config struct {
 	Url UrlConfig `yaml:"url"`
 }
