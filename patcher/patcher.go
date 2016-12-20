@@ -5,10 +5,7 @@ import (
 	"github.com/yukpiz/kipi-patcher/args"
 	"github.com/yukpiz/kipi-patcher/parser"
 	"github.com/yukpiz/kipi-patcher/request"
-	"path/filepath"
 )
-
-const ROOT_PATH string = "/home/yukpiz/.go/extend/src/github.com/yukpiz/kipi-patcher"
 
 func Execute() error {
 	fmt.Println("Execute kipi-patcher ===> (•ө•)♡")
@@ -16,17 +13,10 @@ func Execute() error {
 	option := args.Option{}
 	option.ParseArgs()
 	fmt.Printf("%+v\n", option)
-	option.OutputHelp()
-
-	//Load yaml configuration.
-	var config Config
-	fpath := filepath.Join(ROOT_PATH, "kipi.yml")
-	if err := LoadConfig(fpath, &config); err != nil {
-		return err
-	}
+	//option.OutputHelp()
 
 	//Request and get the patch header.
-	text, err := request.GetBodyString(config.Url.PatchInfo)
+	text, err := request.GetBodyString(PATCH_INFO_URL)
 	if err != nil {
 		return err
 	}
