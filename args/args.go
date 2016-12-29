@@ -26,6 +26,7 @@ func (o *Option) ParseArgs() {
 		o.wrapError(errors.New("Argument is missing."))
 		return
 	}
+	o.initialize()
 
 	options := os.Args[1:]
 	ovalue := reflect.ValueOf(o).Elem() //値セット用
@@ -38,6 +39,10 @@ func (o *Option) ParseArgs() {
 
 		for j, option := range options {
 			replaced := strings.Replace(option, "-", "", -1)
+			if replaced == "" {
+				o.wrapError(errors.New("Argument is missing."))
+				return
+			}
 			for _, op := range ops {
 				if replaced == op {
 					ofield := ovalue.FieldByName(fname)
@@ -59,16 +64,26 @@ func (o *Option) ParseArgs() {
 			}
 		}
 	}
+	o.Help = o.isEmpty()
 	return
 }
 
 func (o *Option) wrapError(err error) {
 	fmt.Println(err)
 	o.initialize()
-	o.Help = true
 	return
 }
 
 func (o *Option) initialize() {
 	*o = Option{}
+	o.Help = true
+}
+
+func (o *Option) isEmpty() bool {
+	return o.To == 0 &&
+		o.From == 0 &&
+		!o.Version &&
+		!o.Patch &&
+		!o.Info &&
+		!o.Server
 }
