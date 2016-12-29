@@ -1,10 +1,13 @@
 package patchinfo
 
 import (
+	"bytes"
 	"errors"
+	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
+	"text/template"
 )
 
 type PatchInfo struct {
@@ -15,6 +18,8 @@ type PatchInfo struct {
 	LoginIp         string `patchinfo:"login"`
 	ExecArg         string `patchinfo:"arg"`
 	LangPackName    string `patchinfo:"lang"`
+	Status          bool
+	StatusCode      int
 }
 
 const tag string = "patchinfo"
@@ -79,4 +84,28 @@ func parse(value string) map[string]string {
 		kvs[kv[0]] = kv[1]
 	}
 	return kvs
+}
+
+func (p *PatchInfo) Print() error {
+	tpl := template.Must(template.New("patchinfo").Parse(`
+[Patch Infomation and Server Status]
+
+ Patch Url          : {{.PatchUrl}}
+ Patch Accept       : {{.PatchAccept}}
+ Latest Version     : {{.LatestVersion}}
+ Launcher Version   : {{.LauncherVersion}}
+ Login Ip           : {{.LoginIp}}
+ Exec Argument      : {{.ExecArg}}
+ Language Pack Name : {{.LangPackName}}
+ Status	            : {{.Status}}
+ StatusCode         : {{.StatusCode}}
+`))
+
+	var o bytes.Buffer
+	if err := tpl.Execute(&o, p); err != nil {
+		return err
+	}
+
+	fmt.Println(o.String())
+	return nil
 }
