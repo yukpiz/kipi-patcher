@@ -1,19 +1,24 @@
 package patcher
 
 import (
-	"fmt"
 	"github.com/yukpiz/kipi-patcher/args"
 	"github.com/yukpiz/kipi-patcher/parser"
 	"github.com/yukpiz/kipi-patcher/request"
 )
 
 func Execute() error {
-	fmt.Println("Execute kipi-patcher ===> (•ө•)♡")
 	//Parsing command line arguments.
 	option := args.Option{}
 	option.ParseArgs()
-	fmt.Printf("%+v\n", option)
-	//option.OutputHelp()
+	if option.Help {
+		option.PrintHelp()
+		return nil
+	}
+
+	if option.Version {
+		option.PrintVersion()
+		return nil
+	}
 
 	//Request and get the patch header.
 	text, err := request.GetBodyString(PATCH_INFO_URL)
@@ -24,6 +29,10 @@ func Execute() error {
 	info := new(patchinfo.PatchInfo)
 	if err := info.Unmarshal(text); err != nil {
 		return err
+	}
+
+	if option.Patch {
+		info.Print()
 	}
 
 	return nil
